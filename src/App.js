@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Context from './components/Context';
 import './App.scss';
-import Basket from './components/Basket';
 import ProductList from './components/ProductList';
+import Intro from './components/Intro';
 import Header from './components/Header';
 
 function App() {
@@ -24,18 +24,33 @@ function App() {
         {
             id: 3,
             photo: 'https://i.ibb.co/HHVQQQN/zapech-california.jpg',
-            title: 'Запеченый ролл «Калифорния»',
+            title: 'Запеченый ролл ',
             gram: '182г.',
             price: '230',
         },
         {
             id: 4,
-            photo: 'https://i.ibb.co/Fm8g5Lg/philadelphia.jpg',
-            title: 'Филадельфия',
-            gram: '230г.',
-            price: '320',
+            photo: 'https://i.ibb.co/HHVQQQN/zapech-california.jpg',
+            title: 'Сет Минисан',
+            gram: '212г.',
+            price: '180',
+        },
+        {
+            id: 5,
+            photo: 'https://i.ibb.co/zxZ73WB/california-hit.jpg',
+            title: 'Сет Хокку',
+            gram: '200г.',
+            price: '323',
+        },
+        {
+            id: 6,
+            photo: 'https://i.ibb.co/rMJS6nW/california-tempura.jpg',
+            title: 'Сет Запеченный',
+            gram: '270г.',
+            price: '300',
         },
     ]);
+    const [amount, setAmount] = useState(0);
     const [order, setOrder] = useState([]);
     const [totalSum, setTotalSum] = useState(0);
 
@@ -44,12 +59,12 @@ function App() {
         let removeSum = 0;
         removeSum = +product.price * product.count;
         setTotalSum((prev) => prev - removeSum);
+        setAmount((prev) => prev - product.count);
     }
 
     function getProduct(item, count, setCount) {
-        setTotalSum((prev) => prev + +item.price * count);
-        setCount(1);
-
+        setAmount((prev) => prev + count);
+        setTotalSum((prev) => prev + item.price * count);
         let isInArray = false;
         order.forEach((elem) => {
             if (elem.id === item.id) {
@@ -58,20 +73,21 @@ function App() {
             }
         });
         if (!isInArray) setOrder([...order, { ...item, count }]);
+        setCount(1);
     }
 
     return (
-        <Context.Provider value={{ getProduct, removeProduct }}>
-            <div className='wrapper'>
+        <div className='wrapper'>
+            <Context.Provider value={{ getProduct, removeProduct }}>
+                <Header total={totalSum} addAmountBasket={amount} productsItem={order} />
                 <div className='container'>
-                    <Header />
+                    <Intro />
                     <menu className='menu'>
                         <ProductList products={products} />
-                        <Basket allSum={totalSum} productOrder={order} />
                     </menu>
                 </div>
-            </div>
-        </Context.Provider>
+            </Context.Provider>
+        </div>
     );
 }
 

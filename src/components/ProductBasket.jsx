@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Context from './Context';
 import '../App.scss';
 
-const BasketProduct = ({ product, checksTotalSum }) => {
+const ProductBasket = ({ product }) => {
     const { removeProduct } = useContext(Context);
 
     return (
@@ -29,4 +29,4 @@ const BasketProduct = ({ product, checksTotalSum }) => {
     );
 };
 
-export default BasketProduct;
+export default ProductBasket;
